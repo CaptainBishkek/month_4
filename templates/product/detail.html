@@ -1,0 +1,68 @@
+{% extends 'layouts/index.html' %}
+{#{% load static %}#}
+
+{% block content %}
+    <style type="text/css">
+        .product {
+            width: 80%;
+            margin-left: 10%;
+        }
+
+        .product > img {
+            width: 400px;
+        }
+
+        .dates {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .review_block {
+            padding: 10px;
+            background: #242b2e;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .reviews_title {
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 40px;
+        }
+    </style>
+    <div class="product">
+
+        {% if product.image %}
+            <img src="/media/{{ product.image }}" alt="">
+        {% else %}
+            <img src="/media/img_1.png" alt="">
+        {% endif %}
+
+        <h1>{{ product.title }}</h1>
+        <h5>{{ product.description }}</h5>
+
+        <div class="dates">
+            <h6>{{ product.created_date }}</h6>
+            <h6>{{ product.modified_date }}</h6>
+        </div>
+
+        <p class="reviews_title">Review</p>
+
+        <form action="/products/{{ product.id }}/" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Add Review">
+        </form>
+
+        <div class="review">
+            {% for review in reviews %}
+                <div class="review_block">
+                    <h6>{{ review.text }}</h6>
+                    <p>{{ review.created_date }}</p>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}
